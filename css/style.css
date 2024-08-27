@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Radio+Canada:ital,wght@0,300..700;1,300..700&family=Shadows+Into+Light&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Radio Canada", sans-serif;
+    /* font-family: "Shadows Into Light", cursive; */
+}
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.background-video video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+.container .sidebar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 40px;
+    width: 50px;
+    height: 100vh;
+    background-color: rgba(28, 31, 26, 0.99);
+}
+
+.container .sidebar ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style-type: none;
+}
+
+.container .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 100px;
+    width: 100%;
+    gap: 40px;
+    color: rgb(255, 255, 255);
+}
+
+.container .content-container .intro-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100vh;
+}
+
+.container .content-container .intro-section h1 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.container .content-container .intro-section p {
+    font-size: 24px;
+    font-family: "Shadows Into Light", cursive !important;
+    font-weight: normal;
+}
+
+.container .content-container .intro-section i {
+    position: absolute;
+    bottom: 40px;
+    font-size: 50px;
+    transform: rotate(90deg);
+    color: rgba(255, 255, 255);
+    animation: bounce 1s infinite;
+}
+
+.container .content-container .skill-section {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    width: 90%;
+    background-color: rgba(28, 31, 26, 0.99);
+    gap: 20px;
+}
+
+.container .content-container .skill-section .top-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    color: #fff;
+}
+
+.container .content-container .skill-section .top-header h3 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container .content-container .skill-section .top-header button {
+    cursor: pointer;
+    padding: 10px;
+    color: rgb(129, 129, 129);
+    background-color: transparent;
+    border: 2px solid rgba(129, 129, 129);
+    font-weight: bold;
+}
+
+.container .content-container .skill-section .top-header button:hover {
+    border: 2px solid rgb(118, 231, 84);
+    color: rgb(118, 231, 84);
+}
+
+.container .content-container .skill-section .top-header button.active {
+    border: 2px solid rgb(118, 231, 84);
+    color: rgb(118, 231, 84);
+}
+
+.container .content-container .skill-section .skill-cards {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-radius: 10px;
+}
+
+.container .content-container .skill-section .skill-cards .card {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(83, 87, 81);
+    width: 150px;
+    height: 150px;
+    padding: 5px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+.container .content-container .skill-section .skill-cards .card:hover {
+    background-color: rgb(118, 231, 84);
+}
+
+.container .content-container .skill-section .skill-cards .card img {
+    width: 150px;
+    height: auto;
+}
+
+.container .content-container .about-me-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px;
+    width: 90%;
+    background-color: rgba(28, 31, 26, 0.99);
+}
+
+.container .content-container .about-me-section .qoute p {
+    font-family: "Shadows Into Light", cursive !important;
+}
+
+.container .content-container .about-me-section .biography-and-img {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.container .content-container .about-me-section .biography-and-img .biography {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.container .content-container .about-me-section .biography-and-img .img-container {
+    width: 700px;
+    height: auto;
+}
+
+.container .content-container .about-me-section .biography-and-img .img-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.container .content-container .about-me-section .services {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container .content-container .about-me-section .services .service-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.container .content-container .about-me-section .services .service-list .service-div {
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+    height: auto;
+    padding: 5px;
+    gap: 20px;
+}
+
+.container .content-container .about-me-section .services .service-list .service-div i {
+    font-size: 38px; /* Adjust the font size if needed */
+    color: rgb(118, 231, 84);
+    width: 38px; /* Set the width */
+    height: 38px; /* Set the height */
+    display: inline-flex; /* Align the icon */
+    align-items: center; /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+}
+
+.container .content-container .about-me-section .services .service-list .service-div .description {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.container .content-container .contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px;
+    width: 90%;
+    background-color: rgba(28, 31, 26, 0.99);
+}
+
+.container .content-container .contacts .title {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container .content-container .contacts .contact-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.container .content-container .contacts .contact-details .contact-detail {
+    display: flex;
+    flex-direction: column;
+    align-items:  center;
+    gap: 10px;
+}
+
+.container .content-container .contacts .contact-details .contact-detail i {
+    font-size: 24px; /* Adjust the font size if needed */
+    color: rgb(118, 231, 84);
+    width: 24px; /* Set the width */
+    height: 24px; /* Set the height */
+    display: inline-flex; /* Align the icon */
+    align-items: center; /* Center the icon vertically */
+    justify-content: center;
+}
+
+
+
+
+
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0) rotate(90deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(90deg); /* Adjust the -20px value to control the bounce height */
+    }
+    100% {
+        transform: translateY(0) rotate(90deg);
+    }
+}
