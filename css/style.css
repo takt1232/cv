@@ -107,6 +107,7 @@
     width: 90%;
     background-color: rgba(28, 31, 26, 0.99);
     gap: 20px;
+    border-radius: 10px;
 }
 
 .container .content-container .skill-section .top-header {
@@ -148,7 +149,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
-    border-radius: 10px;
+    width: 100%;
 }
 
 .container .content-container .skill-section .skill-cards .card {
@@ -157,11 +158,12 @@
     justify-content: center;
     align-items: center;
     background-color: rgb(83, 87, 81);
-    width: 150px;
+    width: calc(25% - 25px);
     height: 150px;
     padding: 5px;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
 }
+
 .container .content-container .skill-section .skill-cards .card:hover {
     background-color: rgb(118, 231, 84);
 }
@@ -446,5 +448,23 @@
     }
     100% {
         transform: translateY(0) rotate(90deg);
+    }
+}
+
+@media (max-width: 1200px) {
+    .container .content-container .skill-section .skill-cards .card {
+        width: calc(33.33% - 25px); /* 3 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 800px) {
+    .container .content-container .skill-section .skill-cards .card {
+        width: calc(50% - 25px); /* 2 cards per row on smaller screens */
+    }
+}
+
+@media (max-width: 500px) {
+    .container .content-container .skill-section .skill-cards .card {
+        width: calc(100% - 25px); /* 1 card per row on very small screens */
     }
 }
