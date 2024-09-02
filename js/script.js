@@ -70,31 +70,31 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", function () {
       document.getElementById("certificate-modal");
     });
-
-  // Modal functions
-  function showConfirmationModal() {
-    document.getElementById("confirmation-modal").style.display = "block";
-  }
-
-  function closeModal() {
-    document.getElementById("confirmation-modal").style.display = "none";
-  }
-
-  function confirmSendEmail() {
-    closeModal();
-    sendEmail();
-  }
-
-  function sendEmail() {
-    let parms = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      subject: document.getElementById("subject").value,
-      message: document.getElementById("message").value,
-    };
-
-    emailjs
-      .send("service_alie5f4", "template_sk1wis2", parms)
-      .then(alert("Email sent successfully"));
-  }
 });
+
+// Modal functions
+function showConfirmationModal() {
+  document.getElementById("confirmation-modal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("confirmation-modal").style.display = "none";
+}
+
+function confirmSendEmail() {
+  closeModal();
+  sendEmail();
+}
+
+function sendEmail() {
+  let parms = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    subject: document.getElementById("subject").value,
+    message: document.getElementById("message").value,
+  };
+
+  emailjs
+    .send("service_alie5f4", "template_sk1wis2", parms)
+    .then(alert("Email sent successfully"));
+}
