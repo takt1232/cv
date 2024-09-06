@@ -52,8 +52,8 @@
                                 <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
                                 </th>
                                 <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
-                                <th>Name & Position <input type="text" id="namePostionSearch"
-                                        placeholder="Search Name and Position"></th>
+                                <th>Salary Range<input type="text" id="salaryRangeSearch"
+                                        placeholder="Search Salary Range"></th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -70,8 +70,8 @@
                                 <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
                                 </th>
                                 <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
-                                <th>Salary Range<input type="text" id="namePostionSearch"
-                                        placeholder="Search Name and Position"></th>
+                                <th>Salary Range<input type="text" id="salaryRangeSearch"
+                                        placeholder="Search Salary Range"></th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -114,8 +114,8 @@
                         <input type="text" class="form-control" id="editSalary">
                     </div>
                     <div class="mb-3">
-                        <label for="editSalary" class="form-label">Name & Position</label>
-                        <input type="text" class="form-control" id="editNamePosition">
+                        <label for="editSalaryRange" class="form-label">Salary Range</label>
+                        <input type="text" class="form-control" id="editSalaryRange" readonly>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -201,7 +201,19 @@
             $('#editAge').val(rowData[3]);
             $('#editStartDate').val(rowData[4]);
             $('#editSalary').val(rowData[5]);
-            $('#editNamePosition').val(rowData[0] + '-' + rowData[1]);
+            var salary = parseInt(rowData[5].replace('$', '').replace(/,/g, ''), 10); let salaryRange = [
+                { salary: 0, label: 'Low' },
+                { salary: 100000, label: 'Medium' },
+                { salary: 500000, label: 'High' }
+            ];
+
+            // Find the appropriate range label
+            let salaryRangeLabel = salaryRange
+                .slice()  // Create a copy to avoid mutating the original array
+                .reverse() // Reverse the array to match the highest salary first
+                .find(range => salary >= range.salary).label;
+
+            $('#editSalaryRange').val(salaryRangeLabel);
 
             // Show the modal
             $('#editModal').modal('show');
@@ -258,7 +270,7 @@
             table.column(5).search(this.value).draw();
         });
 
-        $('#namePostionSearch').on('keyup', function () {
+        $('#salaryRangeSearch').on('keyup', function () {
             table.column(6).search(this.value).draw();
         });
     }
