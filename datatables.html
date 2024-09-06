@@ -25,6 +25,23 @@
             justify-content: right;
             width: 100%;
         }
+
+        .dt-info {
+            margin-top: 20px;
+        }
+
+        .checkbox-column {
+            display: flex;
+            align-items: center;
+            margin-right: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px #c4c4c4 solid;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: transparent !important;
+            color: #0D6EFD !important;
+        }
     </style>
 
 </head>
@@ -32,6 +49,41 @@
 <body>
     <div class="container-fluid">
         <div class="container-fluid mt-5">
+            <h3>Show/Hide Columns</h3>
+            <div class="mb-3 checkbox-column">
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showName" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showName">Name</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showPosition" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showPosition">Position</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showOffice" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showOffice">Office</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showAge" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showAge">Age</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showStartDate" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showStartDate">Start Date</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showSalary" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showSalary">Salary</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showSalaryRange" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showSalaryRange">Salary Range</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input btn-check" type="checkbox" id="showActions" checked>
+                    <label class="form-check-label btn btn-outline-primary" for="showActions">Actions</label>
+                </div>
+            </div>
             <ul class="nav nav-pills d-flex justify-content-center" id="tableTabs" role="tablist">
                 <li class="nav-item me-3">
                     <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#table1" role="tab">Table 1</a>
@@ -272,6 +324,47 @@
 
         $('#salaryRangeSearch').on('keyup', function () {
             table.column(6).search(this.value).draw();
+        });
+
+        // Column visibility control
+        $('#showName').on('change', function () {
+            var column = table.column(0);
+            column.visible(this.checked);
+        });
+
+        $('#showPosition').on('change', function () {
+            var column = table.column(1);
+            column.visible(this.checked);
+        });
+
+        $('#showOffice').on('change', function () {
+            var column = table.column(2);
+            column.visible(this.checked);
+        });
+
+        $('#showAge').on('change', function () {
+            var column = table.column(3);
+            column.visible(this.checked);
+        });
+
+        $('#showStartDate').on('change', function () {
+            var column = table.column(4);
+            column.visible(this.checked);
+        });
+
+        $('#showSalary').on('change', function () {
+            var column = table.column(5);
+            column.visible(this.checked);
+        });
+
+        $('#showSalaryRange').on('change', function () {
+            var column = table.column(6);
+            column.visible(this.checked);
+        });
+
+        $('#showActions').on('change', function () {
+            var column = table.column(7);
+            column.visible(this.checked);
         });
     }
 
