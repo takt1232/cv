@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datatables</title>
+
+    <!-- BOOTSTRAP 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+
+    <style>
+        .bottom {
+            margin-top: 20px;
+        }
+
+        .dt-paging {
+            display: flex;
+            justify-content: right;
+            width: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container-fluid mt-5">
+            <ul class="nav nav-pills d-flex justify-content-center" id="tableTabs" role="tablist">
+                <li class="nav-item me-3">
+                    <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#table1" role="tab">Table 1</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#table2" role="tab">Table 2</a>
+                </li>
+            </ul>
+            <div class="tab-content mt-3 overflow-auto">
+                <div class="tab-pane fade show active" id="table1" role="tabpanel">
+                    <table id="example1" class="table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name <input type="text" id="nameSearch" placeholder="Search Name"></th>
+                                <th>Position <input type="text" id="positionSearch" placeholder="Search Position"></th>
+                                <th>Office <input type="text" id="officeSearch" placeholder="Search Office"></th>
+                                <th>Age <input type="text" id="ageSearch" placeholder="Search Age"></th>
+                                <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
+                                </th>
+                                <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
+                                <th>Name & Position <input type="text" id="namePostionSearch"
+                                        placeholder="Search Name and Position"></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="tab-pane fade overflow-auto" id="table2" role="tabpanel">
+                    <table id="example2" class="table table-dark table-borderless overflow-auto" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name <input type="text" id="nameSearch" placeholder="Search Name"></th>
+                                <th>Position <input type="text" id="positionSearch" placeholder="Search Position"></th>
+                                <th>Office <input type="text" id="officeSearch" placeholder="Search Office"></th>
+                                <th>Age <input type="text" id="ageSearch" placeholder="Search Age"></th>
+                                <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
+                                </th>
+                                <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
+                                <th>Salary Range<input type="text" id="namePostionSearch"
+                                        placeholder="Search Name and Position"></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Row</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="editName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPosition" class="form-label">Position</label>
+                        <input type="text" class="form-control" id="editPosition">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editOffice" class="form-label">Office</label>
+                        <input type="text" class="form-control" id="editOffice">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAge" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="editAge">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editStartDate" class="form-label">Start date</label>
+                        <input type="date" class="form-control" id="editStartDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSalary" class="form-label">Salary</label>
+                        <input type="text" class="form-control" id="editSalary">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSalary" class="form-label">Name & Position</label>
+                        <input type="text" class="form-control" id="editNamePosition">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+<script>
+    // Function to initialize DataTable with custom columns
+    function initializeDataTable(selector) {
+        const table = $(selector).DataTable({
+            ajax: 'arrays.txt',
+            searching: true,
+            dom: '<"top"li>rt<"bottom"p><"clear">',
+            columns: [
+                { data: 0 },  // Name
+                { data: 1 },  // Position
+                { data: 2 },  // Office
+                { data: 3 },  // Age
+                { data: 4 },  // Start date
+                { data: 5 },  // Salary
+                {
+                    // Combine Name and Position
+                    render: function (data, type, row) {
+                        // Assuming salary is in the format '$100000' and needs to be parsed to an integer
+                        var salary = parseInt(row[5].replace('$', '').replace(/,/g, ''), 10);
+
+                        // Define salary ranges
+                        let salaryRange = [
+                            { salary: 0, label: 'Low' },
+                            { salary: 100000, label: 'Medium' },
+                            { salary: 500000, label: 'High' }
+                        ];
+
+                        // Find the appropriate range label
+                        let salaryRangeLabel = salaryRange
+                            .slice()  // Create a copy to avoid mutating the original array
+                            .reverse() // Reverse the array to match the highest salary first
+                            .find(range => salary >= range.salary).label;
+
+                        return salaryRangeLabel;
+                    }
+                },
+                {
+                    // Actions column with Edit and Delete buttons
+                    render: function (data, type, row) {
+                        return `
+                        <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                    `;
+                    }
+                }
+            ]
+        });
+
+        // Delete row functionality
+        $(selector).on('click', '.delete-btn', function () {
+            const row = table.row($(this).parents('tr'));
+            if (confirm('Are you sure you want to delete this row?')) {
+                row.remove().draw();  // Remove the row and redraw the table
+            }
+        });
+
+        // Edit row functionality
+        $(selector).on('click', '.edit-btn', function () {
+            const row = table.row($(this).parents('tr'));
+            const rowData = row.data();
+            currentRow = row;  // Store the current row for later
+
+            // Set the data in the modal inputs
+            $('#editName').val(rowData[0]);
+            $('#editPosition').val(rowData[1]);
+            $('#editOffice').val(rowData[2]);
+            $('#editAge').val(rowData[3]);
+            $('#editStartDate').val(rowData[4]);
+            $('#editSalary').val(rowData[5]);
+            $('#editNamePosition').val(rowData[0] + '-' + rowData[1]);
+
+            // Show the modal
+            $('#editModal').modal('show');
+        });
+
+        // Save changes when the modal is submitted
+        $('#saveChanges').on('click', function () {
+            const editedName = $('#editName').val();
+            const editedPosition = $('#editPosition').val();
+            const editedOffice = $('#editOffice').val();
+            const editedAge = $('#editAge').val();
+            const editedStartDate = $('#editStartDate').val();
+            const editedSalary = $('#editSalary').val();
+            const editedNamePosition = editedName + '-' + editedPosition;
+
+            if (currentRow && editedName !== null && editedPosition !== null && editedOffice !== null && editedAge !== null && editedStartDate !== null && editedSalary !== null && editedNamePosition !== null) {
+                const rowData = currentRow.data();
+                rowData[0] = editedName;
+                rowData[1] = editedPosition;
+                rowData[2] = editedOffice;
+                rowData[3] = editedAge;
+                rowData[4] = editedStartDate;
+                rowData[5] = editedSalary;
+                rowData[6] = editedNamePosition;  // Update the Name & Position column
+                currentRow.data(rowData).draw();
+
+                // Hide the modal
+                $('#editModal').modal('hide');
+            }
+        });
+
+        // Individual column searching
+        $('#nameSearch').on('keyup', function () {
+            table.column(0).search(this.value).draw();
+        });
+
+        $('#positionSearch').on('keyup', function () {
+            table.column(1).search(this.value).draw();
+        });
+
+        $('#officeSearch').on('keyup', function () {
+            table.column(2).search(this.value).draw();
+        });
+
+        $('#ageSearch').on('keyup', function () {
+            table.column(3).search(this.value).draw();
+        });
+
+        $('#startDateSearch').on('keyup', function () {
+            table.column(4).search(this.value).draw();
+        });
+
+        $('#salarySearch').on('keyup', function () {
+            table.column(5).search(this.value).draw();
+        });
+
+        $('#namePostionSearch').on('keyup', function () {
+            table.column(6).search(this.value).draw();
+        });
+    }
+
+    // Initialize both tables
+    initializeDataTable('#example1');
+    initializeDataTable('#example2');
+</script>
+
+</html>
