@@ -11,6 +11,8 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
@@ -22,7 +24,7 @@
 
         .dt-paging {
             display: flex;
-            justify-content: right;
+            justify-content: center;
             width: 100%;
         }
 
@@ -42,6 +44,21 @@
             background-color: transparent !important;
             color: #0D6EFD !important;
         }
+
+        .table {
+            width: 100% !important;
+            table-layout: fixed;
+        }
+
+        span.dt-column-title input {
+            width: 100px !important;
+        }
+
+        span.dt-column-title {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
     </style>
 
 </head>
@@ -49,7 +66,7 @@
 <body>
     <div class="container-fluid">
         <div class="container-fluid mt-5">
-            <h3>Show/Hide Columns</h3>
+            <h4>Show/Hide Columns</h4>
             <div class="mb-3 checkbox-column">
                 <div class="form-check">
                     <input class="form-check-input btn-check" type="checkbox" id="showName" checked>
@@ -79,10 +96,6 @@
                     <input class="form-check-input btn-check" type="checkbox" id="showSalaryRange" checked>
                     <label class="form-check-label btn btn-outline-primary" for="showSalaryRange">Salary Range</label>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showActions" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showActions">Actions</label>
-                </div>
             </div>
             <ul class="nav nav-pills d-flex justify-content-center" id="tableTabs" role="tablist">
                 <li class="nav-item me-3">
@@ -94,6 +107,7 @@
             </ul>
             <div class="tab-content mt-3 overflow-auto">
                 <div class="tab-pane fade show active" id="table1" role="tabpanel">
+                    <button id="deleteButton1" class="delete-btn btn btn-danger mt-3">Delete Selected</button>
                     <table id="example1" class="table table-striped" style="width:100%">
                         <thead>
                             <tr>
@@ -104,7 +118,7 @@
                                 <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
                                 </th>
                                 <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
-                                <th>Salary Range<input type="text" id="salaryRangeSearch"
+                                <th>Salary Range <input type="text" id="salaryRangeSearch"
                                         placeholder="Search Salary Range"></th>
                                 <th>Actions</th>
                             </tr>
@@ -112,6 +126,7 @@
                     </table>
                 </div>
                 <div class="tab-pane fade overflow-auto" id="table2" role="tabpanel">
+                    <button id="deleteButton2" class="delete-btn btn btn-danger mt-3">Delete Selected</button>
                     <table id="example2" class="table table-dark table-borderless overflow-auto" style="width:100%">
                         <thead>
                             <tr>
@@ -185,68 +200,59 @@
     </script>
 
 <script>
-    // Function to initialize DataTable with custom columns
     function initializeDataTable(selector) {
         const table = $(selector).DataTable({
             ajax: 'arrays.txt',
             searching: true,
-            dom: '<"top"li>rt<"bottom"p><"clear">',
+            responsive: true,
+            dom: '<"top"p>rt<"bottom"li><"clear">',
             columns: [
-                { data: 0 },  // Name
-                { data: 1 },  // Position
-                { data: 2 },  // Office
-                { data: 3 },  // Age
-                { data: 4 },  // Start date
-                { data: 5 },  // Salary
+                { data: 0, orderable: false },  // Name
+                { data: 1, orderable: false },  // Position
+                { data: 2, orderable: false },  // Office
+                { data: 3, orderable: false },  // Age
+                { data: 4, orderable: false },  // Start date
+                { data: 5, orderable: false },  // Salary
                 {
-                    // Combine Name and Position
+                    title: 'Salary Range',
+                    orderable: false,
                     render: function (data, type, row) {
-                        // Assuming salary is in the format '$100000' and needs to be parsed to an integer
                         var salary = parseInt(row[5].replace('$', '').replace(/,/g, ''), 10);
-
-                        // Define salary ranges
                         let salaryRange = [
                             { salary: 0, label: 'Low' },
                             { salary: 100000, label: 'Medium' },
                             { salary: 500000, label: 'High' }
                         ];
 
-                        // Find the appropriate range label
                         let salaryRangeLabel = salaryRange
-                            .slice()  // Create a copy to avoid mutating the original array
-                            .reverse() // Reverse the array to match the highest salary first
+                            .slice()
+                            .reverse()
                             .find(range => salary >= range.salary).label;
 
                         return salaryRangeLabel;
                     }
                 },
                 {
-                    // Actions column with Edit and Delete buttons
-                    render: function (data, type, row) {
-                        return `
-                        <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                    `;
+                    orderable: false,
+                    title: 'Actions',
+                    render: function () {
+                        return `<button class="btn btn-warning btn-sm edit-btn">Edit</button>`;
                     }
                 }
             ]
         });
 
-        // Delete row functionality
-        $(selector).on('click', '.delete-btn', function () {
-            const row = table.row($(this).parents('tr'));
-            if (confirm('Are you sure you want to delete this row?')) {
-                row.remove().draw();  // Remove the row and redraw the table
-            }
+        // HANDLE SELECT
+        table.on('click', 'tbody tr', function (e) {
+            e.currentTarget.classList.toggle('selected');
         });
 
-        // Edit row functionality
+        // HANDLE EDIT
         $(selector).on('click', '.edit-btn', function () {
             const row = table.row($(this).parents('tr'));
             const rowData = row.data();
-            currentRow = row;  // Store the current row for later
 
-            // Set the data in the modal inputs
+            // Fill the modal form with row data
             $('#editName').val(rowData[0]);
             $('#editPosition').val(rowData[1]);
             $('#editOffice').val(rowData[2]);
@@ -259,118 +265,104 @@
                 { salary: 500000, label: 'High' }
             ];
 
-            // Find the appropriate range label
             let salaryRangeLabel = salaryRange
-                .slice()  // Create a copy to avoid mutating the original array
-                .reverse() // Reverse the array to match the highest salary first
+                .slice()
+                .reverse()
                 .find(range => salary >= range.salary).label;
 
             $('#editSalaryRange').val(salaryRangeLabel);
 
             // Show the modal
             $('#editModal').modal('show');
-        });
 
-        // Save changes when the modal is submitted
-        $('#saveChanges').on('click', function () {
-            const editedName = $('#editName').val();
-            const editedPosition = $('#editPosition').val();
-            const editedOffice = $('#editOffice').val();
-            const editedAge = $('#editAge').val();
-            const editedStartDate = $('#editStartDate').val();
-            const editedSalary = $('#editSalary').val();
-            const editedNamePosition = editedName + '-' + editedPosition;
+            // Save the changes
+            $('#saveChanges').off('click').on('click', function () {
+                // Get updated data from modal form
+                const updatedData = [
+                    $('#editName').val(),
+                    $('#editPosition').val(),
+                    $('#editOffice').val(),
+                    $('#editAge').val(),
+                    $('#editStartDate').val(),
+                    $('#editSalary').val()
+                ];
 
-            if (currentRow && editedName !== null && editedPosition !== null && editedOffice !== null && editedAge !== null && editedStartDate !== null && editedSalary !== null && editedNamePosition !== null) {
-                const rowData = currentRow.data();
-                rowData[0] = editedName;
-                rowData[1] = editedPosition;
-                rowData[2] = editedOffice;
-                rowData[3] = editedAge;
-                rowData[4] = editedStartDate;
-                rowData[5] = editedSalary;
-                rowData[6] = editedNamePosition;  // Update the Name & Position column
-                currentRow.data(rowData).draw();
+                // Update the row and redraw
+                row.data(updatedData).draw();
 
                 // Hide the modal
                 $('#editModal').modal('hide');
-            }
+            });
         });
 
-        // Individual column searching
-        $('#nameSearch').on('keyup', function () {
-            table.column(0).search(this.value).draw();
+        // HANDLE SEARCH PER COL
+        $(selector + ' thead input').on('keyup change', function () {
+            let colIndex = $(this).closest('th').index();  // Use 'closest' to get the correct index
+            table.column(colIndex).search(this.value).draw();  // Search in the correct column
         });
 
-        $('#positionSearch').on('keyup', function () {
-            table.column(1).search(this.value).draw();
-        });
-
-        $('#officeSearch').on('keyup', function () {
-            table.column(2).search(this.value).draw();
-        });
-
-        $('#ageSearch').on('keyup', function () {
-            table.column(3).search(this.value).draw();
-        });
-
-        $('#startDateSearch').on('keyup', function () {
-            table.column(4).search(this.value).draw();
-        });
-
-        $('#salarySearch').on('keyup', function () {
-            table.column(5).search(this.value).draw();
-        });
-
-        $('#salaryRangeSearch').on('keyup', function () {
-            table.column(6).search(this.value).draw();
-        });
-
-        // Column visibility control
+        // SHOW / HIDE COL
         $('#showName').on('change', function () {
-            var column = table.column(0);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 1, this.checked);  // Show/hide Name column
         });
 
         $('#showPosition').on('change', function () {
-            var column = table.column(1);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 2, this.checked);  // Show/hide Position column
         });
 
         $('#showOffice').on('change', function () {
-            var column = table.column(2);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 3, this.checked);
         });
 
         $('#showAge').on('change', function () {
-            var column = table.column(3);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 4, this.checked);
         });
 
         $('#showStartDate').on('change', function () {
-            var column = table.column(4);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 5, this.checked);
         });
 
         $('#showSalary').on('change', function () {
-            var column = table.column(5);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 6, this.checked);
         });
 
         $('#showSalaryRange').on('change', function () {
-            var column = table.column(6);
-            column.visible(this.checked);
+            toggleColumnVisibility(table, 7, this.checked);
         });
 
-        $('#showActions').on('change', function () {
-            var column = table.column(7);
-            column.visible(this.checked);
-        });
+        return table;
+    }
+
+    function toggleColumnVisibility(table, columnIndex, isVisible) {
+        table.column(columnIndex).visible(isVisible);
     }
 
     // Initialize both tables
-    initializeDataTable('#example1');
-    initializeDataTable('#example2');
+    const table1 = initializeDataTable('#example1');
+    const table2 = initializeDataTable('#example2');
+
+
+    function deleteSelectedRow(table) {
+        const selectedRows = $(table.table().container()).find('tbody tr.selected');
+        if (selectedRows.length === 0) {
+            alert('No rows selected!');
+            return;
+        }
+        if (confirm('Are you sure you want to delete the selected ' + selectedRows.length + ' rows?')) {
+            selectedRows.each(function () {
+                table.row(this).remove().draw(false);
+            });
+        }
+    }
+
+    $('#deleteButton1').on('click', function () {
+        deleteSelectedRow(table1);
+    });
+
+    $('#deleteButton2').on('click', function () {
+        deleteSelectedRow(table2);
+    });
+
 </script>
 
 </html>
