@@ -214,7 +214,6 @@
                 { data: 4, orderable: false },  // Start date
                 { data: 5, orderable: false },  // Salary
                 {
-                    title: 'Salary Range',
                     orderable: false,
                     render: function (data, type, row) {
                         var salary = parseInt(row[5].replace('$', '').replace(/,/g, ''), 10);
@@ -234,7 +233,6 @@
                 },
                 {
                     orderable: false,
-                    title: 'Actions',
                     render: function () {
                         return `<button class="btn btn-warning btn-sm edit-btn">Edit</button>`;
                     }
@@ -297,37 +295,37 @@
 
         // HANDLE SEARCH PER COL
         $(selector + ' thead input').on('keyup change', function () {
-            let colIndex = $(this).closest('th').index();  // Use 'closest' to get the correct index
-            table.column(colIndex).search(this.value).draw();  // Search in the correct column
+            let colIndex = $(this).closest('th').index();
+            table.column(colIndex).search(this.value).draw();
         });
 
         // SHOW / HIDE COL
         $('#showName').on('change', function () {
-            toggleColumnVisibility(table, 1, this.checked);  // Show/hide Name column
+            toggleColumnVisibility(table, 0, this.checked);  // Show/hide Name column
         });
 
         $('#showPosition').on('change', function () {
-            toggleColumnVisibility(table, 2, this.checked);  // Show/hide Position column
+            toggleColumnVisibility(table, 1, this.checked);  // Show/hide Position column
         });
 
         $('#showOffice').on('change', function () {
-            toggleColumnVisibility(table, 3, this.checked);
+            toggleColumnVisibility(table, 2, this.checked);
         });
 
         $('#showAge').on('change', function () {
-            toggleColumnVisibility(table, 4, this.checked);
+            toggleColumnVisibility(table, 3, this.checked);
         });
 
         $('#showStartDate').on('change', function () {
-            toggleColumnVisibility(table, 5, this.checked);
+            toggleColumnVisibility(table, 4, this.checked);
         });
 
         $('#showSalary').on('change', function () {
-            toggleColumnVisibility(table, 6, this.checked);
+            toggleColumnVisibility(table, 5, this.checked);
         });
 
         $('#showSalaryRange').on('change', function () {
-            toggleColumnVisibility(table, 7, this.checked);
+            toggleColumnVisibility(table, 6, this.checked);
         });
 
         return table;
@@ -337,7 +335,6 @@
         table.column(columnIndex).visible(isVisible);
     }
 
-    // Initialize both tables
     const table1 = initializeDataTable('#example1');
     const table2 = initializeDataTable('#example2');
 
