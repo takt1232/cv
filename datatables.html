@@ -18,26 +18,52 @@
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+        :root {
+            --dark-green: #181C14;
+            --gray-green: #464638;
+            --light-tan: #D4C895;
+            --golden-yellow: #E0B762;
+            --red-orange: #B93024;
+            --white-white: #ffffff;
+        }
+
+        body {
+            color: var(--red-orange);
+        }
+
         .bottom {
             margin-top: 20px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: center;
+            padding: 4px;
         }
 
         .dt-paging {
             display: flex;
             justify-content: center;
-            width: 100%;
+            width: fit-content;
+            background: var(--dark-green);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .dt-paging-button.current {
+            background-color: var(--golden-yellow) !important;
+            color: var(--red-orange);
+            border-radius: 8px !important;
         }
 
         .dt-info {
             margin-top: 20px;
         }
 
-        .checkbox-column {
-            display: flex;
-            align-items: center;
-            margin-right: 12px;
-            padding-bottom: 12px;
-            border-bottom: 2px #c4c4c4 solid;
+        .bottom {
+            color: var(--red-orange);
         }
 
         .btn-outline-primary:hover {
@@ -50,8 +76,9 @@
             table-layout: fixed;
         }
 
-        span.dt-column-title input {
-            width: 100px !important;
+        td {
+            color: var(--red-orange);
+            font-weight: bold;
         }
 
         span.dt-column-title {
@@ -59,67 +86,261 @@
             flex-direction: column;
             align-items: flex-start;
         }
+
+        /* CSS for background video */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            /* Ensures content goes above the video */
+        }
+
+        .background-video video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            /* Ensures the video covers the entire background */
+            z-index: -1;
+        }
+
+        .top-header {
+            backdrop-filter: blur(10px);
+        }
+
+        #tableTabs {
+            width: fit-content;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link {
+            color: var(--gray-green);
+        }
+
+        .nav-link:hover {
+            color: var(--red-orange);
+        }
+
+        .nav-pills .nav-link.active,
+        .nav-pills .show>.nav-link {
+            color: var(--red-orange);
+            background-color: var(--dark-green);
+        }
+
+        #checkBoxes {
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-outline-primary {
+            background-color: transparent;
+            color: var(--red-orange);
+            border: 1px solid var(--red-orange);
+        }
+
+        .btn-check:active+.btn-outline-primary,
+        .btn-check:checked+.btn-outline-primary,
+        .btn-outline-primary.active,
+        .btn-outline-primary.dropdown-toggle.show,
+        .btn-outline-primary:active {
+            background-color: var(--dark-green);
+            color: var(--red-orange);
+            border: 1px solid var(--dark-green);
+        }
+
+        .btn-outline-primary:hover {
+            color: var(--red-orange) !important;
+            border: 1px solid var(--red-orange) !important;
+        }
+
+        #tableMainContainer {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        .dt-input {
+            margin-right: 12px;
+        }
+
+        /* Maintain 16:9 aspect ratio for smaller screens */
+        @media (max-aspect-ratio: 16/9) {
+            .background-video video {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        /* Maintain 16:9 aspect ratio for wider screens */
+        @media (min-aspect-ratio: 16/9) {
+            .background-video video {
+                width: auto;
+                height: 100%;
+            }
+        }
+
+        h3 {
+            color: #c8102e;
+            margin: 0 auto;
+            font-size: 2rem;
+            font-family: "Permanent Marker";
+            animation: grow 5s ease infinite alternate;
+            -webkit-animation: grow 5s ease infinite alternate;
+            -moz-animation: grow 5s ease infinite alternate;
+            -o-animation: grow 5s ease infinite alternate;
+        }
     </style>
 
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="container-fluid mt-5">
-            <h4>Show/Hide Columns</h4>
-            <div class="mb-3 checkbox-column">
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showName" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showName">Name</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showPosition" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showPosition">Position</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showOffice" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showOffice">Office</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showAge" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showAge">Age</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showStartDate" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showStartDate">Start Date</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showSalary" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showSalary">Salary</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input btn-check" type="checkbox" id="showSalaryRange" checked>
-                    <label class="form-check-label btn btn-outline-primary" for="showSalaryRange">Salary Range</label>
+    <main class="container-fluid">
+        <div class="background-video">
+            <video src="/media/bg-for-datatables.mp4" autoplay muted loop></video>
+            <audio controls autoplay loop>
+                <source src="/media/scary_swing.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="row p-3 border-bottom fixed-top top-header" style="border-color: var(--dark-green) !important;">
+            <div class="col-sm-8">
+                <h3 role="button" onclick="window.location.href='index.html'">My Portfolio</h3>
+                <section>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                    <div class='blooddrop'></div>
+                </section>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+        <div class="container-fluid" style="margin-top: 120px;">
+            <div class="container d-flex justify-content-center">
+                <ul class="nav nav-pills d-flex justify-content-between p-2 rounded border" id="tableTabs"
+                    role="tablist" style="border-color: var(--dark-green) !important;">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#table1" role="tab">Table 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#table2" role="tab">Table 2</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="container-fluid d-flex flex-column align-items-center border rounded mt-4 p-2" id="checkBoxes"
+                style="border-color: var(--dark-green) !important;">
+                <h5>Show/Hide Columns</h5>
+                <hr class="mb-3 mt-0" style="width: 400px;">
+                <div class="container-fluid d-flex flex-row justify-content-center checkbox-column">
+                    <div class="form-check p-0">
+                        <input class="form-check-input btn-check" type="checkbox" id="showName" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showName">Name</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input btn-check" type="checkbox" id="showPosition" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showPosition">Position</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input btn-check" type="checkbox" id="showOffice" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showOffice">Office</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input btn-check" type="checkbox" id="showAge" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showAge">Age</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input btn-check" type="checkbox" id="showStartDate" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showStartDate">Start Date</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input btn-check" type="checkbox" id="showSalary" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showSalary">Salary</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input btn-check" type="checkbox" id="showSalaryRange" checked>
+                        <label class="form-check-label btn btn-outline-primary" for="showSalaryRange">Salary
+                            Range</label>
+                    </div>
                 </div>
             </div>
-            <ul class="nav nav-pills d-flex justify-content-center" id="tableTabs" role="tablist">
-                <li class="nav-item me-3">
-                    <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#table1" role="tab">Table 1</a>
-                </li>
-                <li class="nav-item me-3">
-                    <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#table2" role="tab">Table 2</a>
-                </li>
-            </ul>
-            <div class="tab-content mt-3 overflow-auto">
+
+            <div class="tab-content mt-3 overflow-auto rounded border p-4 mb-4" id="tableMainContainer"
+                style="border-color: var(--dark-green) !important;">
                 <div class="tab-pane fade show active" id="table1" role="tabpanel">
-                    <button id="deleteButton1" class="delete-btn btn btn-danger mt-3">Delete Selected</button>
-                    <table id="example1" class="table table-striped" style="width:100%">
+                    <button id="deleteButton1" class="delete-btn btn btn-danger">Delete Selected</button>
+                    <table id="example1" class="table table-borderless" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Name <input type="text" id="nameSearch" placeholder="Search Name"></th>
-                                <th>Position <input type="text" id="positionSearch" placeholder="Search Position"></th>
-                                <th>Office <input type="text" id="officeSearch" placeholder="Search Office"></th>
-                                <th>Age <input type="text" id="ageSearch" placeholder="Search Age"></th>
-                                <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
+
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Name</span>
+                                        <input type="text" class="form-control" classes=table-borderless id="nameSearch"
+                                            placeholder="Search Name" aria-label="Search Name"
+                                            aria-describedby="basic-addon1">
+                                    </div>
                                 </th>
-                                <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
-                                <th>Salary Range <input type="text" id="salaryRangeSearch"
-                                        placeholder="Search Salary Range"></th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon2">Position</span>
+                                        <input type="text" class="form-control" id="positionSearch"
+                                            placeholder="Search Position" aria-label="Search Position"
+                                            aria-describedby="basic-addon2">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon3">Office</span>
+                                        <input type="text" class="form-control" id="officeSearch"
+                                            placeholder="Search Office" aria-label="Search Office"
+                                            aria-describedby="basic-addon3">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon4">Age</span>
+                                        <input type="number" class="form-control" id="ageSearch"
+                                            placeholder="Search Age" aria-label="Search Age"
+                                            aria-describedby="basic-addon4">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon5">Start Date</span>
+                                        <input type="date" class="form-control" id="startDateSearch"
+                                            placeholder="Search Start Date" aria-label="Search Start Date"
+                                            aria-describedby="basic-addon5">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon6">Salary</span>
+                                        <input type="number" class="form-control" id="salarySearch"
+                                            placeholder="Search Salary" aria-label="Search Salary"
+                                            aria-describedby="basic-addon6">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon7">Salary Range</span>
+                                        <input type="text" class="form-control" id="salaryRangeSearch"
+                                            placeholder="Search Salary Range" aria-label="Search Salary Range"
+                                            aria-describedby="basic-addon7">
+                                    </div>
+                                </th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -146,7 +367,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -234,7 +455,7 @@
                 {
                     orderable: false,
                     render: function () {
-                        return `<button class="btn btn-warning btn-sm edit-btn">Edit</button>`;
+                        return `<button class="btn btn-danger btn-sm edit-btn">Edit</button>`;
                     }
                 }
             ]
