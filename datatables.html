@@ -87,7 +87,6 @@
             align-items: flex-start;
         }
 
-        /* CSS for background video */
         .background-video {
             position: fixed;
             top: 0;
@@ -107,16 +106,17 @@
             min-height: 100%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Ensures the video covers the entire background */
             z-index: -1;
         }
 
         .top-header {
             backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.2);
         }
 
         #tableTabs {
             width: fit-content;
+            background: rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
         }
 
@@ -135,7 +135,7 @@
         }
 
         #checkBoxes {
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .btn-outline-primary {
@@ -161,11 +161,50 @@
 
         #tableMainContainer {
             background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(2px);
         }
 
         .dt-input {
             margin-right: 12px;
+        }
+
+        .randomGif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .randomGif img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        .tr.selected {
+            background-color: var(--golden-yellow) !important;
+        }
+
+        .dt-column-title {
+            color: var(--red-orange);
+        }
+
+        table.dataTable>tbody>tr.selected>* {
+            box-shadow: none;
+            color: var(--red-orange);
+        }
+
+        table.dataTable tbody tr.selected {
+            background-color: var(--golden-yellow);
         }
 
         /* Maintain 16:9 aspect ratio for smaller screens */
@@ -200,11 +239,13 @@
 
 <body>
     <main class="container-fluid">
+        <div class="randomGif">
+            <img id="randomGif" src="" alt="Random GIF" />
+            <img id="randomGif1" src="" alt="Random GIF" />
+        </div>
         <div class="background-video">
-            <video src="/cv/media/bg-for-datatables.mp4" autoplay muted loop></video>
-            <audio controls autoplay loop>
-                <source src="/cv/media/scary_swing.mp3" type="audio/mpeg">
-            </audio>
+            <video src="/media/bg-for-datatables.mp4" autoplay muted loop></video>
+            <audio id="backgroundAudio" loop src="/media/scary_swing.mp3"></audio>
         </div>
         <div class="row p-3 border-bottom fixed-top top-header" style="border-color: var(--dark-green) !important;">
             <div class="col-sm-8">
@@ -284,7 +325,6 @@
                     <table id="example1" class="table table-borderless" style="width:100%">
                         <thead>
                             <tr>
-
                                 <th>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">Name</span>
@@ -348,18 +388,65 @@
                 </div>
                 <div class="tab-pane fade overflow-auto" id="table2" role="tabpanel">
                     <button id="deleteButton2" class="delete-btn btn btn-danger mt-3">Delete Selected</button>
-                    <table id="example2" class="table table-dark table-borderless overflow-auto" style="width:100%">
+                    <table id="example2" class="table table-borderless overflow-auto" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Name <input type="text" id="nameSearch" placeholder="Search Name"></th>
-                                <th>Position <input type="text" id="positionSearch" placeholder="Search Position"></th>
-                                <th>Office <input type="text" id="officeSearch" placeholder="Search Office"></th>
-                                <th>Age <input type="text" id="ageSearch" placeholder="Search Age"></th>
-                                <th>Start date <input type="text" id="startDateSearch" placeholder="Search Start Date">
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Name</span>
+                                        <input type="text" class="form-control" classes=table-borderless id="nameSearch"
+                                            placeholder="Search Name" aria-label="Search Name"
+                                            aria-describedby="basic-addon1">
+                                    </div>
                                 </th>
-                                <th>Salary <input type="text" id="salarySearch" placeholder="Search Salary"></th>
-                                <th>Salary Range<input type="text" id="salaryRangeSearch"
-                                        placeholder="Search Salary Range"></th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon2">Position</span>
+                                        <input type="text" class="form-control" id="positionSearch"
+                                            placeholder="Search Position" aria-label="Search Position"
+                                            aria-describedby="basic-addon2">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon3">Office</span>
+                                        <input type="text" class="form-control" id="officeSearch"
+                                            placeholder="Search Office" aria-label="Search Office"
+                                            aria-describedby="basic-addon3">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon4">Age</span>
+                                        <input type="number" class="form-control" id="ageSearch"
+                                            placeholder="Search Age" aria-label="Search Age"
+                                            aria-describedby="basic-addon4">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon5">Start Date</span>
+                                        <input type="date" class="form-control" id="startDateSearch"
+                                            placeholder="Search Start Date" aria-label="Search Start Date"
+                                            aria-describedby="basic-addon5">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon6">Salary</span>
+                                        <input type="number" class="form-control" id="salarySearch"
+                                            placeholder="Search Salary" aria-label="Search Salary"
+                                            aria-describedby="basic-addon6">
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon7">Salary Range</span>
+                                        <input type="text" class="form-control" id="salaryRangeSearch"
+                                            placeholder="Search Salary Range" aria-label="Search Salary Range"
+                                            aria-describedby="basic-addon7">
+                                    </div>
+                                </th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -581,6 +668,37 @@
         deleteSelectedRow(table2);
     });
 
+</script>
+
+<script>
+    const gifUrl = 'https://i.pinimg.com/originals/70/23/91/7023915b1a3095743fccf0f5baa6091b.gif';
+    const gifUrl1 = '/media/blood-stain.png';
+
+    function playRandomGif() {
+        const imgElement = document.getElementById('randomGif');
+        const imgElement1 = document.getElementById('randomGif1');
+
+        if (Math.random() > 0.5) {
+            imgElement.src = gifUrl;
+            imgElement1.src = gifUrl1;
+
+            setTimeout(() => {
+                imgElement.src = '';
+                imgElement1.src = '';
+            }, 3000);
+        } else {
+            imgElement.src = '';
+            imgElement1.src = '';
+        }
+    }
+    setInterval(playRandomGif, 10000);
+</script>
+
+<script>
+    window.addEventListener('click', function () {
+        const audio = document.getElementById('backgroundAudio');
+        audio.play();
+    });
 </script>
 
 </html>
