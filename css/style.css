@@ -106,6 +106,16 @@ p {
   object-fit: cover;
 }
 
+.project-card {
+  height: 400px;
+  max-height: 400px;
+}
+
+.project-card .card-text {
+  font-size: .8rem;
+  overflow-y: auto;
+}
+
 .project-tag {
   background-color: #191919c0;
   border: 1px solid #3b3b3b;
@@ -114,6 +124,18 @@ p {
 .tool-card {
   background-color: #3B3B3B;
   color: #ffffff;
+}
+
+.scrollable-text {
+  max-height: 110px;
+  overflow-y: auto;
+  padding-right: 5px; 
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollable-text::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 /* 
