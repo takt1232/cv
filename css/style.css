@@ -124,12 +124,24 @@ p {
 .tool-card {
   background-color: #3B3B3B;
   color: #ffffff;
+  height: 120px;
 }
 
 .scrollable-text {
   max-height: 110px;
   overflow-y: auto;
   padding-right: 5px; 
+}
+
+.tech-img-container {
+  width: 4rem;
+  height: 4rem;
+}
+
+.tech-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Hide scrollbar but keep functionality */
